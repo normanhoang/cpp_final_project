@@ -72,7 +72,7 @@ int main() {
 
 	vector<Stock> stock_list;
 	vector<Option> option_list;
-	//vector<string> ticker_list{ "PEP", "LOW", "MRK" };
+	//vector<string> ticker_list{ "AAPL", "FB", "TSLA", "NFLX", "GOOG", "MMM", "PEP", "ATVI", "SQ", "TWLO" };
 	
 	// uncomment for full download
 	vector<string> ticker_list;
@@ -261,6 +261,8 @@ int main() {
 
 	out_file << "ticker,date,call_or_put,strike,option_price_mid,forecasted_vol,ci_high,ci_low,implied_vol,vol_diff,delta,days_until_exp,volume" << endl;
 
+	int result_size = min(10, data_list.size());
+
 	// saves all of data to a csv file
 	for (auto it = data_list.begin(); it != data_list.end(); ++it) {
 		out_file << (*it).ticker << "," << (*it).exp_date << "," << (*it).call_or_put << "," << (*it).strike <<
@@ -270,23 +272,23 @@ int main() {
 
 
 		// prints top 10 volatility spreads to screen with delta neutral strategy
-		if (it < data_list.begin() + 10) {
+		if (it < data_list.begin() + result_size) {
 			cout << (*it).ticker << endl;
 			if ((*it).vol_diff > 0 && (*it).call_or_put == 'C') {
 				cout << "Buy n of the option " << (*it).ticker << " C " << (*it).exp_date << " strike= " << (*it).strike <<
-					" and short " << fabs((*it).delta) * 100 << " *n shares of the underlying." << endl;
+					" and short " << fabs((*it).delta) << " * n shares of the underlying." << endl;
 			}
 			else if ((*it).vol_diff < 0 && (*it).call_or_put == 'C') {
 				cout << "Short n of the option " << (*it).ticker << " C " << (*it).exp_date << " strike= " << (*it).strike <<
-					" and buy " << fabs((*it).delta) * 100 << " *n shares of the underlying." << endl;
+					" and buy " << fabs((*it).delta) << " * n shares of the underlying." << endl;
 			}
 			else if ((*it).vol_diff > 0 && (*it).call_or_put == 'P') {
 				cout << "Buy n of the option " << (*it).ticker << " P " << (*it).exp_date << " strike= " << (*it).strike <<
-					" and buy " << fabs((*it).delta) * 100 << " *n shares of the underlying." << endl;
+					" and buy " << fabs((*it).delta) << " * n shares of the underlying." << endl;
 			}
 			else if ((*it).vol_diff < 0 && (*it).call_or_put == 'P') {
 				cout << "Short n of the option " << (*it).ticker << " P " << (*it).exp_date << " strike= " << (*it).strike <<
-					" and Short " << fabs((*it).delta) * 100 << " *n shares of the underlying." << endl;
+					" and Short " << fabs((*it).delta) << " * n shares of the underlying." << endl;
 			}
 		}
 	}
